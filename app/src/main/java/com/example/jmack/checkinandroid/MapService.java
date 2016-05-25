@@ -47,6 +47,8 @@ public class MapService extends IntentService implements
                 .build();
         mGoogleApiClient.connect();
 
+        //TODO This is where we will set the interval to be 15 minutes
+
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)
