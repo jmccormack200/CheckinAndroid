@@ -2,13 +2,20 @@ package com.example.jmack.checkinandroid;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jmack on 5/26/16.
@@ -34,26 +41,31 @@ public class SlackService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        try{
-            URL url = new URL(
-                    "https://hooks.slack.com/services/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"
-            );
-            HttpURLConnection client = (HttpURLConnection) url.openConnection();
-            client = (HttpURLConnection) url.openConnection();
-            client.setRequestMethod("POST");
-            client.setRequestProperty("Content-type", "application/json");
-            client.setDoOutput(true);
+        String url =
+                "https://hooks.slack.com/services/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";
 
-            DataOutputStream dStream = new DataOutputStream(client.getOutputStream());
-            dStream.writeBytes(jsonString);
-            dStream.flush();
-            dStream.close();
+        RequestQueue queue = Volley.newRequestQueue(this);
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response){
+                        Log.v("URL", response);
+                    }
+                }, new Response.ErrorListener(){
+                    @Override
+            public void onErrorResponse(VolleyError error){
+                        Log.v("URL", error.getMessage());
+                    }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("payload", jsonString);
 
-        } catch (java.net.MalformedURLException e ){
-            e.printStackTrace();
-        } catch (java.io.IOException e ){
-            e.printStackTrace();
-        }
+                return params;
+            }
+        };
+        queue.add(stringRequest);
     }
 }
