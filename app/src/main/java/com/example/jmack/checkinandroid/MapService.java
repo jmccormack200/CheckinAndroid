@@ -10,12 +10,9 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
-import java.util.List;
 
 /**
  * Created by jmack on 5/25/16.
@@ -28,13 +25,6 @@ public class MapService extends IntentService implements
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-
-    private static final String INTREPID_ID = "intrepidGeoFence";
-    private static final double INTREPID_LAT = 42.367152;
-    private static final double INTREPID_LONG = -71.080197;
-    private static final float GEOFENCE_RADIUS_IN_METERS = 50.0f;
-
-    private List<Geofence> mGeofenceList;
 
     public static final String TAG = MapService.class.getSimpleName();
 
@@ -55,16 +45,6 @@ public class MapService extends IntentService implements
                 .build();
         mGoogleApiClient.connect();
 
-        boolean add = mGeofenceList.add(new Geofence.Builder()
-                .setRequestId(INTREPID_ID)
-                .setCircularRegion(
-                        INTREPID_LAT,
-                        INTREPID_LONG,
-                        GEOFENCE_RADIUS_IN_METERS)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                .build()
-        );
 
         //TODO This is where we will set the interval to be 15 minutes
 
@@ -144,29 +124,15 @@ public class MapService extends IntentService implements
         double Lat = location.getLatitude();
         double Long = location.getLongitude();
 
-        double diffDistance = metersToLocation(Lat, Long, INTREPID_LAT, INTREPID_LONG);
 
         Log.v(TAG, "Latitude = " + String.valueOf(Lat));
         Log.v(TAG, "Longitude = " + String.valueOf(Long));
-        Log.v(TAG, "Distance = " + String.valueOf(diffDistance));
-    }
-
-    public double metersToLocation(double startLat, double startLong, double endLat, double endLong){
-        double dlat = startLat - endLat;
-        double dlong = startLong - endLong;
-
-        double a = Math.pow((Math.sin(dlat/2)),2)
-                + Math.cos(startLat)
-                * Math.cos(endLat)
-                * Math.pow((Math.sin(dlong)),2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double R = 6373; //Median radius of Earth in Km
-        return R * c;
     }
 
     @Override
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
     }
+
+
 }
