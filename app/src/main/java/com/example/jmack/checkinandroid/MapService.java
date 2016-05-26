@@ -23,8 +23,9 @@ public class MapService extends IntentService implements
         LocationListener {
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+
+    private GoogleApiClient mGoogleApiClient;
 
     public static final String TAG = MapService.class.getSimpleName();
 
@@ -46,6 +47,7 @@ public class MapService extends IntentService implements
         mGoogleApiClient.connect();
 
 
+
         //TODO This is where we will set the interval to be 15 minutes
 
         mLocationRequest = LocationRequest.create()
@@ -57,6 +59,7 @@ public class MapService extends IntentService implements
     @Override
     public void onDestroy(){
         super.onDestroy();
+        Log.v("Tag", "Destroying");
         if (mGoogleApiClient.isConnected()){
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
@@ -96,7 +99,6 @@ public class MapService extends IntentService implements
             Log.v(TAG, e.getMessage());
         }
 
-
         Log.v(TAG, "Location services connected.");
     }
 
@@ -107,16 +109,7 @@ public class MapService extends IntentService implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//        if (connectionResult.hasResolution()){
-//            try {
-////                connectionResult.startResolutionForResult(this,
-////                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
-//            } catch (IntentSender.SendIntentException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            Log.v(TAG, "Location services failed with code " + connectionResult.getErrorCode());
-//        }
+
     }
 
     public void handleNewLocation(Location location){
