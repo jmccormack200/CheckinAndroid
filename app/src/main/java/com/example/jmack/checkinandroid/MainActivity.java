@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private PendingIntent getGeofencePendingIntent(){
-        Log.v("CALLLED", "WAS THIS CALLED!?");
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -78,19 +77,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onResult(@NonNull Result result) {
-        Log.v("Callback", "Callback was called, not sure what to do here");
+        Log.v("Callback", "Callback");
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Location location = null;
 
-        mGeofenceList.add(new Geofence.Builder()
-                .setRequestId(INTREPID_ID)
-                .setCircularRegion(INTREPID_LAT, INTREPID_LONG, GEOFENCE_RADIUS_IN_METERS)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                .build());
+        addToGeoFenceList();
 
         try {
             LocationServices.GeofencingApi.addGeofences(
@@ -125,5 +119,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mGoogleApiClient.isConnected()){
             mGoogleApiClient.disconnect();
         }
+    }
+
+    public void addToGeoFenceList(){
+        mGeofenceList.add(new Geofence.Builder()
+                .setRequestId(INTREPID_ID)
+                .setCircularRegion(INTREPID_LAT, INTREPID_LONG, GEOFENCE_RADIUS_IN_METERS)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .build());
     }
 }

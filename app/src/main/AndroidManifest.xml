@@ -18,9 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".MapService"
-            android:exported="false"/>
         <service android:name=".GeofenceTransitionsIntentService"
             android:exported="false" />
         <service android:name=".SlackService"/>
