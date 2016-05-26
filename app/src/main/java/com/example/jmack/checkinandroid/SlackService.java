@@ -22,7 +22,10 @@ import java.util.Map;
  */
 public class SlackService extends IntentService {
 
-    private String jsonString = "{ \"text\":\"I\'m Here\"}";
+    private String jsonString = "{ " +
+            "\"username\":\"Bendah\",\n" +
+            "\"icon_emoji\":\":bender:\",\n" +
+            "\"text\":\"I\'m Here\"}";
     private JSONObject mPayload;
 
     public SlackService() {
