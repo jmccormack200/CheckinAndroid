@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+
     public void addToGeoFenceList(){
         mGeofenceList.add(new Geofence.Builder()
                 .setRequestId(INTREPID_ID)
@@ -135,4 +136,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 mGoogleApiClient,
                 getGeofencePendingIntent()).setResultCallback(this);
     }
+
 }

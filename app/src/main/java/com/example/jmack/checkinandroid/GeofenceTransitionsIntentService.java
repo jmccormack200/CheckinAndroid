@@ -5,15 +5,32 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingEvent;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jmack on 5/26/16.
  */
-public class GeofenceTransitionsIntentService extends IntentService {
+public class GeofenceTransitionsIntentService extends IntentService implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static int mId = 404;
     NotificationManager mNotificationManager;
+
+    private GoogleApiClient mGoogleApiClient;
 
     public GeofenceTransitionsIntentService() {
         super("Geofence");
@@ -22,11 +39,29 @@ public class GeofenceTransitionsIntentService extends IntentService {
     @Override
     public void onCreate(){
         super.onCreate();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         buildNotification();
+
+        GeofencingEvent event = GeofencingEvent.fromIntent(intent);
+        List<Geofence> triggeredGeofence = event.getTriggeringGeofences();
+        List<String> toRemove = new ArrayList<>();
+        for (Geofence geofence : triggeredGeofence){
+            toRemove.add(geofence.getRequestId());
+        }
+        LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient, toRemove);
+
+
+
+
     }
 
     private void buildNotification(){
@@ -61,5 +96,19 @@ public class GeofenceTransitionsIntentService extends IntentService {
     @Override
     public void onDestroy(){
 
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.v("GEO", "Connection Suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.v("GEO", "Connection Failed");
     }
 }
