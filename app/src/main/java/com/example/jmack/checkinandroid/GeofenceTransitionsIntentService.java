@@ -49,12 +49,17 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
     private PendingIntent sendSlackMessage(){
         Intent resultIntent = new Intent(this, SlackService.class);
+        resultIntent.putExtra(Intent.EXTRA_TEXT, String.valueOf(mId));
 
         PendingIntent resultPendingIntent = PendingIntent.getService(
                 this,
                 0,
                 resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_CANCEL_CURRENT);
         return resultPendingIntent;
+    }
+    @Override
+    public void onDestroy(){
+
     }
 }

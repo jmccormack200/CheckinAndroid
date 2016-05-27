@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onResult(@NonNull Result result) {
-        Log.v("Callback", "Callback");
+        Log.v("Callback", "Callback was called, not sure what to do here");
     }
 
     @Override
@@ -128,5 +128,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                 .build());
+    }
+
+    public void removeFromGeoFence(){
+        LocationServices.GeofencingApi.removeGeofences(
+                mGoogleApiClient,
+                getGeofencePendingIntent()).setResultCallback(this);
     }
 }
