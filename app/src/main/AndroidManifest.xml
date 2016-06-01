@@ -21,5 +21,4 @@
         <service android:name=".GeofenceTransitionsIntentService"/>
         <service android:name=".SlackService"/>
     </application>
-
 </manifest>

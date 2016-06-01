@@ -13,6 +13,8 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity  {
 
+    private static int ONE_DAY = 1000 * 60 * 60 * 24;
+
     @Override
     protected void onStart(){
         super.onStart();
@@ -25,23 +27,17 @@ public class MainActivity extends AppCompatActivity  {
 
         Intent intent = new Intent(this, GeoFenceIntent.class);
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR,0);
-        cal.set(Calendar.AM_PM, Calendar.AM);
-        cal.add(Calendar.DAY_OF_MONTH, 1);
+        cal = configCal(cal);
 
         PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
 
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP,
                 cal.getTimeInMillis(),
-                1000*60*60*24,
+                ONE_DAY,
                 pintent);
 
         startService(intent);
-
     }
 
     @Override
@@ -50,8 +46,13 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
     }
 
-
-
-
-
+    protected Calendar configCal(Calendar cal){
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.HOUR,0);
+        cal.set(Calendar.AM_PM, Calendar.AM);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        return cal;
+    }
 }
