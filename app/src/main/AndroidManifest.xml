@@ -18,8 +18,7 @@
             </intent-filter>
         </activity>
         <service android:name=".GeoFenceIntent"/>
-        <service android:name=".GeofenceTransitionsIntentService"
-            android:exported="false" />
+        <service android:name=".GeofenceTransitionsIntentService"/>
         <service android:name=".SlackService"/>
     </application>
 

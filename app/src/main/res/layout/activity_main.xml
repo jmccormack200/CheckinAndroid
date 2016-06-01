@@ -14,11 +14,5 @@
         android:layout_height="wrap_content"
         android:src="@drawable/intrepidlogo"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:textSize="22sp"
-        android:text="App is Now Scanning for Home"/>
 
 </LinearLayout>
