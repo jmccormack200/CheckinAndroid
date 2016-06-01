@@ -30,16 +30,13 @@ public class GeoFenceIntent extends IntentService implements
     private static final String INTREPID_ID = "intrepidGeoFence";
     private static final double INTREPID_LAT = 42.367152;
     private static final double INTREPID_LONG = -71.080197;
-    private static final float GEOFENCE_RADIUS_IN_METERS = 1000.0f;
+    private static final float GEOFENCE_RADIUS_IN_METERS = 50.0f;
+
+    private final String LOG_TAG = this.getClass().getSimpleName();
 
 
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<Geofence> mGeofenceList = new ArrayList<>();
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-
-    }
 
     public GeoFenceIntent() {
         super("GeoFenceIntent");
@@ -69,23 +66,13 @@ public class GeoFenceIntent extends IntentService implements
                     getGeofencePendingIntent()
             ).setResultCallback(this);
         } catch (SecurityException e ){
-            Log.v("-----------", e.getMessage());
+            Log.v(LOG_TAG, e.getMessage());
         } catch (Exception e) {
-            Log.v("This", "Other Error");
+            Log.v(LOG_TAG, e.getMessage());
         }
-        Log.v("This", "Location services connected.");
+        Log.v(LOG_TAG, "Location services connected.");
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.v("Suspended", "Suspended");
-    }
-
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.v("Failed", "Failed");
-    }
 
     private GeofencingRequest getGeofencingRequest(){
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
@@ -100,14 +87,9 @@ public class GeoFenceIntent extends IntentService implements
     }
 
     @Override
-    public void onResult(@NonNull Result result) {
-        Log.v("Callback", "Callback was called, not sure what to do here");
-    }
-
-    @Override
     public void onDestroy(){
         super.onDestroy();
-        Log.v("Tag", "Destroying");
+        Log.v(LOG_TAG, "Destroying");
         if (mGoogleApiClient.isConnected()){
             mGoogleApiClient.disconnect();
         }
@@ -123,10 +105,24 @@ public class GeoFenceIntent extends IntentService implements
                 .build());
     }
 
-    public void removeFromGeoFence(){
-        LocationServices.GeofencingApi.removeGeofences(
-                mGoogleApiClient,
-                getGeofencePendingIntent()).setResultCallback(this);
+    @Override
+    public void onResult(@NonNull Result result) {
+        //Any Callbacks we need to run can be added here
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.v(LOG_TAG, "Suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.v(LOG_TAG, "Failed");
     }
 
 }
