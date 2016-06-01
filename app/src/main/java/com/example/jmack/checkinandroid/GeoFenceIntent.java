@@ -45,6 +45,7 @@ public class GeoFenceIntent extends IntentService implements
     @Override
     public void onCreate(){
         super.onCreate();
+        //At start we initialize the Google API Client
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -56,6 +57,7 @@ public class GeoFenceIntent extends IntentService implements
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Location location = null;
+        // Once the Google API Connects, we register the geofence
 
         addToGeoFenceList();
 
@@ -75,6 +77,7 @@ public class GeoFenceIntent extends IntentService implements
 
 
     private GeofencingRequest getGeofencingRequest(){
+        // Add the geofencing list to the geofence builder
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(mGeofenceList);
@@ -82,12 +85,14 @@ public class GeoFenceIntent extends IntentService implements
     }
 
     private PendingIntent getGeofencePendingIntent(){
+        // Create a pending intent that fires when we cross into the geofence.
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public void onDestroy(){
+        // On exit we simply disconnect from the Google API
         super.onDestroy();
         Log.v(LOG_TAG, "Destroying");
         if (mGoogleApiClient.isConnected()){
@@ -97,6 +102,7 @@ public class GeoFenceIntent extends IntentService implements
 
 
     public void addToGeoFenceList(){
+        // Additional Geofences should be added here.
         mGeofenceList.add(new Geofence.Builder()
                 .setRequestId(INTREPID_ID)
                 .setCircularRegion(INTREPID_LAT, INTREPID_LONG, GEOFENCE_RADIUS_IN_METERS)

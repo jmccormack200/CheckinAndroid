@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,7 +27,7 @@ public class GeofenceTransitionsIntentService extends IntentService implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private static int mId = 404;
-    NotificationManager mNotificationManager;
+    private NotificationManager mNotificationManager;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -51,6 +50,7 @@ public class GeofenceTransitionsIntentService extends IntentService implements
     protected void onHandleIntent(Intent intent) {
         buildNotification();
 
+        // After Geofence triggers we remove the geofence, it will be added again at midnight
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
         List<Geofence> triggeredGeofence = event.getTriggeringGeofences();
         List<String> toRemove = new ArrayList<>();
@@ -58,19 +58,19 @@ public class GeofenceTransitionsIntentService extends IntentService implements
             toRemove.add(geofence.getRequestId());
         }
         LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient, toRemove);
-
-
-
-
     }
 
     private void buildNotification(){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_explore_white_24dp)
-                .setContentTitle("Welcome Back!")
-                .setContentText("Looks like you're back at Intrepid. What to Check in?")
-                .addAction(R.drawable.ic_done_black_24dp, "Check In", sendSlackMessage())
+                .setContentTitle(getString(R.string.popup_title))
+                .setContentText(getString(R.string.popup_message))
+                .addAction(
+                        R.drawable.ic_done_black_24dp,
+                        getString(R.string.popup_button),
+                        sendSlackMessage()
+                )
                 .setAutoCancel(true)
                 .setVibrate(new long[] {250, 1000, 250, 1000, 2000, 500});
 
@@ -79,7 +79,6 @@ public class GeofenceTransitionsIntentService extends IntentService implements
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(mId, mBuilder.build());
-
     }
 
     private PendingIntent sendSlackMessage(){
@@ -90,12 +89,11 @@ public class GeofenceTransitionsIntentService extends IntentService implements
                 this,
                 0,
                 resultIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
         return resultPendingIntent;
     }
     @Override
     public void onDestroy(){
-
     }
 
     @Override
@@ -104,11 +102,10 @@ public class GeofenceTransitionsIntentService extends IntentService implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.v("GEO", "Connection Suspended");
+
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.v("GEO", "Connection Failed");
     }
 }

@@ -36,6 +36,7 @@ public class SlackService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+//        TODO: Didn't want to bog down the slack channel, uncomment to use
 //        String url =
 //                "https://hooks.slack.com/services/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";
 //
@@ -63,10 +64,10 @@ public class SlackService extends IntentService {
 //        };
 //        queue.add(stringRequest);
 //
-        int mId = Integer.valueOf(intent.getStringExtra(Intent.EXTRA_TEXT));
+        int Id = Integer.valueOf(intent.getStringExtra(Intent.EXTRA_TEXT));
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(mId);
+        notificationManager.cancel(Id);
 
         Log.v("Temp", "Slack Intet Recorded");
     }

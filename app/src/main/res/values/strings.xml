@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">CheckinAndroid</string>
     <string name="button_text">Start Service</string>
+    <string name="popup_title">Welcome Back!</string>
+    <string name="popup_message">Looks like you\'re back at Intrepid. Want to Check in?</string>
+    <string name="popup_button">Check In</string>
 </resources>
