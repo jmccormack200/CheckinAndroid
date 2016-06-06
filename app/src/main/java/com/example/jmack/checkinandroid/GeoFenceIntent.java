@@ -27,10 +27,6 @@ public class GeoFenceIntent extends IntentService implements
         GoogleApiClient.OnConnectionFailedListener,
         ResultCallback {
 
-    private static final String INTREPID_ID = "intrepidGeoFence";
-    private static final double INTREPID_LAT = 42.367152;
-    private static final double INTREPID_LONG = -71.080197;
-    private static final float GEOFENCE_RADIUS_IN_METERS = 50.0f;
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
@@ -104,8 +100,11 @@ public class GeoFenceIntent extends IntentService implements
     public void addToGeoFenceList(){
         // Additional Geofences should be added here.
         mGeofenceList.add(new Geofence.Builder()
-                .setRequestId(INTREPID_ID)
-                .setCircularRegion(INTREPID_LAT, INTREPID_LONG, GEOFENCE_RADIUS_IN_METERS)
+                .setRequestId(LocationConstants.INTREPID_ID)
+                .setCircularRegion(
+                        LocationConstants.INTREPID_LAT,
+                        LocationConstants.INTREPID_LONG,
+                        LocationConstants.GEOFENCE_RADIUS_IN_METERS)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                 .build());
