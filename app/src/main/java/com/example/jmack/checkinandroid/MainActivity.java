@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
      * When the user responds to the permission request, either the intent services are set up
      * or a toast is shown with an error message.
      *
-     * @param requestCode the code returned from the permission request
-     * @param permissions the list of permissions requested
+     * @param requestCode  the code returned from the permission request
+     * @param permissions  the list of permissions requested
      * @param grantResults the id of the permissions which indicates if it is granted or denied
      */
     @Override
