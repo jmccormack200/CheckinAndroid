@@ -39,19 +39,21 @@ public class SlackService extends IntentService {
 
     /**
      * When the intent is received, a POST request is made to the Slack webhook and the notification is cleared.
+     *
      * @param intent The intent received from the previous service.
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        sendSlackPOSTRequest();
+        //sendSlackPOSTRequest();
         removeNotification(intent);
+        Log.v(LOG_TAG, "Slack Intent Received");
     }
 
     /**
      * A Request Queue is established using the Volley library. The Slack Request is built and then
      * added to the request Queue.
      */
-    public void sendSlackPOSTRequest(){
+    public void sendSlackPOSTRequest() {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = createSlackPOSTRequest();
         queue.add(stringRequest);
@@ -59,9 +61,10 @@ public class SlackService extends IntentService {
 
     /**
      * The Slack Post Request is built and returned in a format useable by Volley
+     *
      * @return The Request that can then be passed into the Volley Queue
      */
-    public StringRequest createSlackPOSTRequest(){
+    public StringRequest createSlackPOSTRequest() {
         return new StringRequest(Request.Method.POST, url,
                                  new Response.Listener<String>() {
                                      @Override
@@ -86,12 +89,14 @@ public class SlackService extends IntentService {
 
     /**
      * The Notification that triggered the Slack service is removed to avoid sending duplicate messages.
+     *
      * @param intent The intent sent from the previous Service
      */
-    public void removeNotification(Intent intent){
+    public void removeNotification(Intent intent) {
         int Id = Integer.valueOf(intent.getStringExtra(Intent.EXTRA_TEXT));
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(Id);
+
     }
 }
