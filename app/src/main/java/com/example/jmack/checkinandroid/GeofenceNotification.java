@@ -20,9 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jmack on 5/26/16.
+ * The GeoFence Notification generates the notification that will send data to the Slack Service class.
+ *
+ * @author John McCormack
+ * @version 1.0
+ * @since 2016-06-06
  */
-public class GeofenceTransitionsIntentService extends IntentService implements
+public class GeofenceNotification extends IntentService implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -30,7 +34,7 @@ public class GeofenceTransitionsIntentService extends IntentService implements
 
     private GoogleApiClient mGoogleApiClient;
 
-    public GeofenceTransitionsIntentService() {
+    public GeofenceNotification() {
         super("Geofence");
     }
 

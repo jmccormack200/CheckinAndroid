@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 /**
  * The GeoFence Intent sets up the GeoFence based on the location stored in the LocationConstants static class.
- * When a user activates the GeoFence it will send an intent to GeofenceTransitionsIntentService class.
+ * When a user activates the GeoFence it will send an intent to GeofenceNotification class.
  *
  * @author John McCormack
  * @version 1.0
@@ -121,11 +121,11 @@ public class GeoFenceIntent extends IntentService implements
     /**
      * Configures the intent which will trigger in conjunction with the geofence
      *
-     * @return A pending intent that points to the GeofenceTransitionsIntentService class
+     * @return A pending intent that points to the GeofenceNotification class
      */
     private PendingIntent getGeofencePendingIntent() {
         // Create a pending intent that fires when we cross into the geofence.
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        Intent intent = new Intent(this, GeofenceNotification.class);
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

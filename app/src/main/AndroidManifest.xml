@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <service android:name=".GeoFenceIntent"/>
-        <service android:name=".GeofenceTransitionsIntentService"/>
+        <service android:name=".GeofenceNotification"/>
         <service android:name=".SlackService"/>
     </application>
 </manifest>
