@@ -4,4 +4,5 @@
     <string name="popup_title">Welcome Back!</string>
     <string name="popup_message">Looks like you\'re back at Intrepid. Want to Check in?</string>
     <string name="popup_button">Check In</string>
+    <string name="permission_error_msg">Error: This App requires Geolocation Permissions</string>
 </resources>
