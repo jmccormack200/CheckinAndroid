@@ -1,6 +1,5 @@
 package com.example.jmack.checkinandroid;
 
-import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -20,11 +19,17 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStart(){
         super.onStart();
 
-        //Get Permission for Fine Location and Internet access
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //Get Permission for Fine Location and Internet access
         ActivityCompat.requestPermissions(this, new String[]{
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.INTERNET},
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.INTERNET},
                 10);
     }
 
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity  {
             Intent intent = new Intent(this, GeoFenceIntent.class);
             Calendar cal = Calendar.getInstance();
 
-            cal = configCal(cal);
+            cal = setCalToMidnight(cal);
 
             PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
 
@@ -54,13 +59,12 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-
-    protected Calendar configCal(Calendar cal){
+    /**
+     * This function returns a calendar object that is set to midnight of the following day.
+     * @param cal - The calendar object being configured.
+     * @return The configured calendar object.
+     */
+    protected Calendar setCalToMidnight(Calendar cal){
         //Sets the calendar to begin at midnight
         cal.setTimeInMillis(System.currentTimeMillis());
         cal.set(Calendar.SECOND, 0);
