@@ -19,10 +19,6 @@ import java.util.Map;
 /**
  * The Slack Service class manages sending data to the Slack Webhook. It is triggered upon the reception of an
  * intent from another class. It also will clear the notification that sent the intent.
- *
- * @author John McCormack
- * @version 1.0
- * @since 2016-06-06
  */
 public class SlackService extends IntentService {
 

@@ -23,9 +23,6 @@ import java.util.ArrayList;
  * The GeoFence Intent sets up the GeoFence based on the location stored in the LocationConstants static class.
  * When a user activates the GeoFence it will send an intent to GeofenceNotification class.
  *
- * @author John McCormack
- * @version 1.0
- * @since 2016-06-06
  */
 public class GeoFenceIntent extends IntentService implements
         GoogleApiClient.ConnectionCallbacks,

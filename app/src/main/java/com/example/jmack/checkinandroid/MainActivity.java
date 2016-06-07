@@ -16,10 +16,6 @@ import java.util.Calendar;
  * The Main Activity displays the intrepid logo and initialises a repeating intent that
  * is sent immediately and then re-sends each night at midnight. This Intent will be sent to
  * The GeofenceIntent class.
- *
- * @author John McCormack
- * @version 1.0
- * @since 2016-06-06
  */
 
 public class MainActivity extends AppCompatActivity {
