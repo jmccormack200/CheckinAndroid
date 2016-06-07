@@ -61,7 +61,7 @@ public class SlackService extends IntentService {
     }
 
     /**
-     * The Slack Post Request is built and returned in a format useable by Volley
+     * The Slack Post Request is built and returned in a format usable by Volley
      *
      * @return The Request that can then be passed into the Volley Queue
      */

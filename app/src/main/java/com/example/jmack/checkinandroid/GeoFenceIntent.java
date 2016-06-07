@@ -152,5 +152,4 @@ public class GeoFenceIntent extends IntentService implements
 
     }
 
-
 }

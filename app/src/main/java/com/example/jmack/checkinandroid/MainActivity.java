@@ -35,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Get Permission for Fine Location and Internet access
         ActivityCompat.requestPermissions(this, new String[] {
-                                                  android.Manifest.permission.ACCESS_FINE_LOCATION,
-                                                  android.Manifest.permission.INTERNET },
-                                          10);
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.INTERNET }, 10);
     }
 
     /**
