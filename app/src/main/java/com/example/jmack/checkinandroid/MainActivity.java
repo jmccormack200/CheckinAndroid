@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Main Activity displays the intrepid logo and initialises a repeating intent that
@@ -20,8 +21,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int ONE_DAY = 1000 * 60 * 60 * 24;
-
+    private static final long ONE_DAY_MS = TimeUnit.DAYS.toMillis(1);
 
     /**
      * Displays the activity_main.xml file and requests the appropriate permissions for the app.
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP,
                            cal.getTimeInMillis(),
-                           ONE_DAY,
+                           ONE_DAY_MS,
                            pendingIntent);
 
         //One instance of the intent is triggered immediately.

@@ -26,10 +26,11 @@ public class GeofenceNotification extends IntentService implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private static int mId = 404;
+    private static final int NOTIFICATION_ID = 1;
 
     private GoogleApiClient mGoogleApiClient;
 
+    //TODO Change from a static string
     public GeofenceNotification() {
         super("Geofence");
     }
@@ -41,6 +42,10 @@ public class GeofenceNotification extends IntentService implements
     @Override
     public void onCreate() {
         super.onCreate();
+        connectToGoogleApiClient();
+    }
+
+    private void connectToGoogleApiClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -89,14 +94,13 @@ public class GeofenceNotification extends IntentService implements
                         .addAction(
                                 R.drawable.ic_done_black_24dp,
                                 getString(R.string.popup_button),
-                                sendSlackMessage()
+                                createSlackPendingIntent()
                         )
-                        .setAutoCancel(true)
                         .setVibrate(new long[] { 250, 1000, 250, 1000, 2000, 500 });
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(mId, builder.build());
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
     /**
@@ -106,9 +110,9 @@ public class GeofenceNotification extends IntentService implements
      *
      * @return The pending intent to start the Slack Service Class
      */
-    private PendingIntent sendSlackMessage() {
+    private PendingIntent createSlackPendingIntent() {
         Intent resultIntent = new Intent(this, SlackService.class);
-        resultIntent.putExtra(Intent.EXTRA_TEXT, String.valueOf(mId));
+        resultIntent.putExtra(Intent.EXTRA_TEXT, String.valueOf(NOTIFICATION_ID));
 
         return PendingIntent.getService(
                 this,

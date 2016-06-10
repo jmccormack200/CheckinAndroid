@@ -32,7 +32,7 @@ public class SlackService extends IntentService {
     private static final String url =
             "https://hooks.slack.com/services/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";
 
-    private final String LOG_TAG = this.getClass().getSimpleName();
+    private final static String LOG_TAG = SlackService.class.getSimpleName();
 
     public SlackService() {
         super("Slack");
@@ -45,7 +45,7 @@ public class SlackService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        //sendSlackPOSTRequest();
+        sendSlackPOSTRequest();
         removeNotification(intent);
         Log.v(LOG_TAG, "Slack Intent Received");
     }
@@ -56,7 +56,7 @@ public class SlackService extends IntentService {
      */
     public void sendSlackPOSTRequest() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = createSlackPOSTRequest();
+        StringRequest stringRequest = createSlackPostRequest();
         queue.add(stringRequest);
     }
 
@@ -65,7 +65,7 @@ public class SlackService extends IntentService {
      *
      * @return The Request that can then be passed into the Volley Queue
      */
-    public StringRequest createSlackPOSTRequest() {
+    public StringRequest createSlackPostRequest() {
         return new StringRequest(Request.Method.POST, url,
                                  new Response.Listener<String>() {
                                      @Override
@@ -75,7 +75,7 @@ public class SlackService extends IntentService {
                                  }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v(LOG_TAG, error.getMessage());
+                Log.e(LOG_TAG, error.getMessage());
             }
         }) {
             @Override

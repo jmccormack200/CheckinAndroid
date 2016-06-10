@@ -3,7 +3,6 @@ package com.example.jmack.checkinandroid;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,7 +45,10 @@ public class GeoFenceIntent extends IntentService implements
     @Override
     public void onCreate() {
         super.onCreate();
-        //At start we initialize the Google API Client
+        connectToGoogleApiLocationServices();
+    }
+
+    public void connectToGoogleApiLocationServices(){
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -62,7 +64,6 @@ public class GeoFenceIntent extends IntentService implements
     public void onDestroy() {
         // On exit we simply disconnect from the Google API
         super.onDestroy();
-        Log.v(LOG_TAG, "Destroying");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
@@ -75,11 +76,7 @@ public class GeoFenceIntent extends IntentService implements
      */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Location location = null;
-        // Once the Google API Connects, we register the geofence
-
         addToGeofenceList();
-
         try {
             LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClient,
@@ -87,9 +84,8 @@ public class GeoFenceIntent extends IntentService implements
                     getGeofencePendingIntent()
             ).setResultCallback(this);
         } catch (SecurityException e) {
-            Log.v(LOG_TAG, e.getMessage());
+            Log.e(LOG_TAG, e.getMessage());
         }
-        Log.v(LOG_TAG, "Location services connected.");
     }
 
     @Override
