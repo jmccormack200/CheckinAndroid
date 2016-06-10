@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
-
     /**
      * This function returns a calendar object that is set to midnight of the following day.
      *
